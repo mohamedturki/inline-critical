@@ -112,15 +112,17 @@ module.exports = function (html, styles, options) {
             noscript.append('\n');
         });
 
-        // build js block to load blocking stylesheets and insert it right before
-        // exposes async stylesheets as global asyncss array which could be used with onloadCSS
-        noscript.before('<script id="loadcss">\n' +
-            loadCSS + '\n' +
-            '(function(w,u,s){' +
-            'w.asyncss=[];' +
-            'for(var i in u){w.asyncss.push(w.loadCSS(u[i],s));}' +
-            '}("undefined"!=typeof global?global:this,[\'' + hrefs.join('\',\'') + '\'],document.getElementById("loadcss")));\n' +
-            '</script>\n');
+        if (o.loadCSS !== false) {
+            // build js block to load blocking stylesheets and insert it right before
+            // exposes async stylesheets as global asyncss array which could be used with onloadCSS
+            noscript.before('<script id="loadcss">\n' +
+                loadCSS + '\n' +
+                '(function(w,u,s){' +
+                'w.asyncss=[];' +
+                'for(var i in u){w.asyncss.push(w.loadCSS(u[i],s));}' +
+                '}("undefined"!=typeof global?global:this,[\'' + hrefs.join('\',\'') + '\'],document.getElementById("loadcss")));\n' +
+                '</script>\n');
+        }
     }
 
     var dom = parse($.html());

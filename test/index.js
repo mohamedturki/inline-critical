@@ -188,6 +188,18 @@ describe('Module: inline-critical', function () {
 
         done();
     });
+
+    it('should skip loadcss if loadCSS parameter is false', function(done) {
+        var html = read('test/fixtures/index.html');
+        var css = read('test/fixtures/critical.css');
+
+        var expected = read('test/expected/index-without-loadcss.html');
+        var out = inlineCritical(html, css, {loadCSS: false});
+
+        expect(strip(out.toString('utf-8'))).to.be.equal(strip(expected));
+
+        done();
+    });
 });
 
 describe('CLI', function () {
